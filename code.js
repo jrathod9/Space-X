@@ -3,12 +3,34 @@ var c = canvas.getContext('2d');
 canvas.width = window.innerWidth-20;	
 canvas.height = window.innerHeight-20;	
 
+var backgroundSound = new Howl({
+			src: ['Sounds/bg.wav'],
+			loop : true,
+			autoplay : true,
+			volume : 0.2
+		});
+
+backgroundSound.play();
 var bulletSound = new Howl({
-	src: ['silencer.mp3']
+	src: ['Sounds/laser1.wav'],
+	volume : 0.2
   });
-var deathSound = new Howl({
-	src: ['death.mp3']
-});
+
+var o;
+var BoomSounds = new Array();
+for(o=1; o<=9;o++){
+
+	var temp = new Howl({
+		src : [ 'Sounds/boom'+o+'.wav' ],
+		volume : 0.2
+	});
+
+	BoomSounds.push(temp);
+}
+
+// var deathSound = new Howl({
+// 	src: ['death.mp3']
+// });
 
 var Alive = -1;			//1
 var flag = 0;
@@ -26,7 +48,7 @@ var midBottomw = 24,midBottomh = 20 ,midTopw = 16,midToph = 20;
 var baseBottomw = 36 ,baseBottomh = 24 ,baseTopw = 28 ,baseToph = 24;
 var ridgew = 16 ,ridgeh = 16;
 var colorBack = "aqua", colorFront = "blue";
-var shuttleSpeedh = 10;
+var shuttleSpeedh = 7;
 var shuttleSpeedv  = 4;
 
 //alien props and dimanesions
@@ -38,7 +60,7 @@ var layer2w = 4,layer2h = 4;
 var midw = 3,midh = 3;
 
 var bulletSpeed = 7;
-var alienSpeed = 0.15 ;
+var alienSpeed = 0.2 ;
 var aliensOnScreen = 5;
 var keys = [];
 
@@ -173,7 +195,7 @@ function draw(){
 			{
 				Alive =  0;
 			}
-			deathSound.play();
+			BoomSounds[Math.floor(Math.random()*9)].play();
 			var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
 			Aliens[j] = addAlien;	
 
@@ -257,7 +279,8 @@ function draw(){
 			{
 				kills++;
 				Bullets[i].y = -10;
-				deathSound.play();
+				// deathSound.play();
+				BoomSounds[Math.floor(Math.random()*9)].play();
 				var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
 				Aliens[j] = addAlien;
 				if(kills == 10 || kills == 20 || kills == 30 || kills == 40 || kills==50 || kills == 60 )
