@@ -27,6 +27,7 @@ for(o=1; o<=9;o++){
 	BoomSounds.push(temp);
 }
 
+var level = 1;
 var Alive = -1;			
 var flag = 0;
 var totalBullets = 0;
@@ -303,8 +304,16 @@ function draw(){
 					Aliens[j] = addAlien;
 
 					//Increase difficulty with kills 
-					if(kills % 10 == 0)
+					if(kills % 10 == 0){
 						alienSpeed += 0.1;
+					}		
+					if(kills % 20 == 0){
+						level++;
+						var levelupAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
+						Aliens.push(levelupAlien);
+						maxAliens++;
+					}
+					
 				}
 			}
 		}
