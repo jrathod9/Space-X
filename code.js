@@ -1,7 +1,72 @@
 var canvas = document.querySelector('#canvas');
 var c = canvas.getContext('2d');
-canvas.width = window.innerWidth-20;	
+canvas.width = window.innerWidth-24;	
 canvas.height = window.innerHeight-20;	
+
+// SPRITES
+var shuttlesprite = new Image();
+shuttlesprite.src = 'Spaceshuttles/spaceshuttle2.png'; //spaceshuttle.png
+
+var empty = new Image();
+var alien1 = new Image();
+var alien2 = new Image();
+var alien3 = new Image();
+alien1.src = 'Aliens/alien1.png';
+alien2.src = 'Aliens/alien2.png';
+alien3.src = 'Aliens/alien3.png';
+
+var aliensprites = new Array();
+aliensprites.push(empty);
+aliensprites.push(alien1);
+aliensprites.push(alien2);
+aliensprites.push(alien3);
+
+var exp1 = new Image();
+var exp2 = new Image();
+var exp3 = new Image();
+var exp4 = new Image();
+var exp5 = new Image();
+var exp6 = new Image();
+var exp7 = new Image();
+
+exp1.src = 'Explosion/1.png';
+exp2.src = 'Explosion/2.png';
+exp3.src = 'Explosion/3.png';
+exp4.src = 'Explosion/4.png';
+exp5.src = 'Explosion/5.png';
+exp6.src = 'Explosion/6.png';
+exp7.src = 'Explosion/7.png';
+
+var explosionStages  = new Array();
+
+explosionStages.push(exp1);
+explosionStages.push(exp2);
+explosionStages.push(exp3);
+explosionStages.push(exp3);
+explosionStages.push(exp3);
+explosionStages.push(exp3);
+explosionStages.push(exp3);
+explosionStages.push(exp3);
+explosionStages.push(exp4);
+explosionStages.push(exp4);
+explosionStages.push(exp4);
+explosionStages.push(exp4);
+explosionStages.push(exp4);
+explosionStages.push(exp4);
+explosionStages.push(exp5);
+explosionStages.push(exp5);
+explosionStages.push(exp5);
+explosionStages.push(exp5);
+explosionStages.push(exp5);
+explosionStages.push(exp5);
+explosionStages.push(exp6);
+explosionStages.push(exp6);
+explosionStages.push(exp6);
+explosionStages.push(exp6);
+explosionStages.push(exp6);
+explosionStages.push(exp6);
+explosionStages.push(exp7);
+//END SPRITE
 
 var backgroundSound = new Howl({
 			src: ['Sounds/bg.wav'],
@@ -77,9 +142,10 @@ var star = function(x,y ,rad){
 }
 
 //Alien object
-var alien = function(x,y){
+var alien = function(x,y,type){
 	this.x = x;
 	this.y = y;
+	this.type = type;
 }
 
 //Bullet object
@@ -103,7 +169,7 @@ for(a = 0; a<maxStars ; a++){
 
 //Array of initial aliens
 for(a = 0; a < aliensOnScreen; a++){
-	var temp = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
+	var temp = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300),Math.floor(Math.random()*3));
 	Aliens.push(temp);
 }
 
@@ -186,22 +252,8 @@ function draw(){
 		//Draw ALIENS
 		for( j=0 ; j<Aliens.length ; j++)
 		{
-			c.fillStyle = alienColors[Math.floor(Math.random()*4)];
-			c.beginPath();
-			c.fillRect(Aliens[j].x - bunw/2,Aliens[j].y - faceh/2 - headh - bunh , bunw , bunh);
-			c.fillRect(Aliens[j].x - headw/2 , Aliens[j].y - faceh/2 - headh, headw , headh);
-			c.fillRect(Aliens[j].x - facew/2 , Aliens[j].y - faceh/2 , facew ,faceh);
-			c.fillRect(Aliens[j].x + midh/2 , Aliens[j].y + faceh/2 , layer1w , layer1h);
-			c.fillRect(Aliens[j].x - midh/2 -layer1w , Aliens[j].y + faceh/2 , layer1w , layer1h);
-			c.fillRect(Aliens[j].x + midw/2 + layer1w/2 , Aliens[j].y + faceh/2 + layer1h , layer2w , layer2h);
-			c.fillRect(Aliens[j].x - midw/2 - layer1w -2, Aliens[j].y + faceh/2 + layer1h , layer2w , layer2h);
-			c.fillRect(Aliens[j].x - midw/2 , Aliens[j].y + faceh/2 + layer1h + layer2h , midw , midh );
-			c.fillStyle = "black";
-			//Eyes
-			c.fillRect(Aliens[j].x - headw/2 , Aliens[j].y , 8, 4);
-			c.fillRect(Aliens[j].x + headw/2 - 8 , Aliens[j].y , 8, 4);
-			c.closePath();
-			c.fill();
+			c.drawImage(aliensprites[Aliens[j].type+1] , Aliens[j].x-25 , Aliens[j].y-25 , 50,50);
+
 			Aliens[j].y += alienSpeed;
 
 			//Handling Alien Shuttle collision & Alien passing through base condition
@@ -212,7 +264,7 @@ function draw(){
 					Alive =  0;
 				}
 				BoomSounds[Math.floor(Math.random()*9)].play();
-				var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
+				var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300), Math.floor(Math.random()*3));
 				Aliens[j] = addAlien;	
 
 			}
@@ -263,31 +315,7 @@ function draw(){
 		
 		// DRAWING THE SHUTTLE
 
-		//Cannon
-		c.beginPath();
-		c.fillStyle = bulletColors[Math.floor(Math.random()*6)];		
-		c.fillRect(testShuttle.x - cannonw/2 , testShuttle.y - midBottomh - cannonh ,cannonw,cannonh);	
-		//Mid bottom
-		c.fillRect(testShuttle.x - midBottomw/2, testShuttle.y  - midBottomh, midBottomw , midBottomh);
-		//Mid top
-		c.fillStyle = colorFront;
-		c.fillRect(testShuttle.x- midTopw/2 ,  testShuttle.y - midToph, midTopw,midToph);
-		c.closePath();
-		//BaseBottom
-		c.fillStyle = bulletColors[Math.floor(Math.random()*6)];
-		c.fillRect(testShuttle.x- baseBottomw/2 , testShuttle.y ,baseBottomw,baseBottomh);
-		//BaseTop
-		c.fillStyle = colorFront;
-		c.fillRect(testShuttle.x- baseTopw/2 ,  testShuttle.y  , baseTopw , baseToph);
-		//Ridge
-		c.fillStyle = "black";
-		c.fillRect(testShuttle.x- ridgew/2 , testShuttle.y + baseToph - ridgeh, ridgew,ridgeh);
-		//Tail
-		c.fillStyle = bulletColors[Math.floor(Math.random()*8)];
-		c.fillRect(testShuttle.x + baseBottomw/2 , testShuttle.y + baseBottomh,7,7);
-		c.fillRect(testShuttle.x - baseBottomw/2 - 7,testShuttle.y + baseBottomh,7,7 );
-		c.closePath();
-		c.fill();
+		  c.drawImage(shuttlesprite,testShuttle.x-35,testShuttle.y-50,70,100);
 
 		//Checking for bullet kill
 
@@ -295,12 +323,18 @@ function draw(){
 		{
 			for(j=0;j<maxAliens;j++)
 			{
-				if(Math.abs(Bullets[i].x - Aliens[j].x) <= 18 && Bullets[i].y <= Aliens[j].y && (testShuttle.y - Aliens[j].y) >= 38 )
+				if(Math.abs(Bullets[i].x - Aliens[j].x) <= 18 && Bullets[i].y <= Aliens[j].y && Bullets[i].y>=Aliens[j].y-20 && (testShuttle.y - Aliens[j].y) >= 38 )
 				{
 					kills++;
 					Bullets[i].y = -10;
 					BoomSounds[Math.floor(Math.random()*9)].play();
-					var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
+					for(let t = 0;t<27;t++)
+					{
+
+						c.drawImage(explosionStages[t],Aliens[j].x-50, Aliens[j].y-50,100,100);
+						// c.clearRect(Aliens[j].x-25, Aliens[j].y-25,100,100);
+					}
+					var addAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300),Math.floor(Math.random()*2));
 					Aliens[j] = addAlien;
 
 					//Increase difficulty with kills 
@@ -309,7 +343,7 @@ function draw(){
 					}		
 					if(kills % 20 == 0){
 						level++;
-						var levelupAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300));
+						var levelupAlien = new alien(Math.random()*(window.innerWidth-100)+60, Math.random()*(window.innerHeight/2-300),Math.floor(Math.random()*2));
 						Aliens.push(levelupAlien);
 						maxAliens++;
 					}
