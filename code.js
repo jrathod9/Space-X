@@ -289,25 +289,25 @@ function draw(){
 		//Handling arrow key presses and shuttle movement boundaries 
 		
 		// left
-	    if (keys[37]) {
+	    if (keys[65] || keys[37]) {		//37
 			if(testShuttle.x >= 70)
 			testShuttle.x -= shuttleSpeedh;
 		  }
 	   
 		  // right
-		  if (keys[39]) {
+		  if (keys[68] || keys[39]) {		//39
 			  if(testShuttle.x <= window.innerWidth - 50)
 			testShuttle.x += shuttleSpeedh;
 		  }
 	   
 		  // down
-		  if (keys[38]) {
+		  if (keys[87] || keys[38]) {		//38
 			if(testShuttle.y >= window.innerHeight/2)
 			testShuttle.y -= shuttleSpeedv;
 		  }
 	   
 		  // up
-		  if (keys[40]) {
+		  if (keys[83] || keys[40]) {		//40
 			if(testShuttle.y <= window.innerHeight - baseBottomh - midBottomh - cannonh)
 			testShuttle.y += shuttleSpeedv;
 			
