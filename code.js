@@ -181,8 +181,8 @@ function dist(x1,y1,x2,y2){
 
 	return(Math.sqrt((x1 - x2)**2 + (y1 - y1)**2 ));
 }
-
-requestAnimationFrame(draw);
+window.addEventListener("load", draw , false);
+//requestAnimationFrame(draw);
 function draw(){	
 	//Clear window
 	c.clearRect(0,0,window.innerWidth, window.innerHeight);
