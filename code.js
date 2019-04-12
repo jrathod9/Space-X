@@ -73,7 +73,7 @@ var backgroundSound = new Howl({
 			loop : true
 		});
 
-var soundCount = 0;
+// var soundCount = 0;
 
 var bulletSound = new Howl({
 	src: ['Sounds/laser1.wav'],
@@ -207,11 +207,11 @@ function draw(){
 	//GAME 
 	else if(Alive)
 	{
-		if(soundCount == 0)		//Initiate background sound
-		{
-			backgroundSound.play();
-			soundCount = 1;
-		}
+// 		if(soundCount == 0)		//Initiate background sound
+// 		{
+// 			backgroundSound.play();
+// 			soundCount = 1;
+// 		}
 		
 		//Draw Health Bar
 		c.beginPath();
